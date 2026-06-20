@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ doctor.full_name }} - Hospital Management System{% endblock %}
+{% block page_title %}{{ doctor.full_name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 100px; height: 100px;">
+                    <i class="bi bi-person-badge" style="font-size: 3rem;"></i>
+                </div>
+                <h4>{{ doctor.full_name }}</h4>
+                <p class="text-muted">{{ doctor.specialization }}</p>
+                <p class="text-muted">{{ doctor.department.name }}</p>
+                <hr>
+                <div class="row text-center">
+                    <div class="col-6">
+                        <strong>{{ doctor.experience_years }}</strong>
+                        <p class="text-muted mb-0">Years Experience</p>
+                    </div>
+                    <div class="col-6">
+                        <strong>${{ doctor.consultation_fee }}</strong>
+                        <p class="text-muted mb-0">Consultation Fee</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5>Doctor Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Employee ID:</strong> {{ doctor.employee_id }}</p>
+                        <p><strong>Department:</strong> {{ doctor.department.name }}</p>
+                        <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Qualification:</strong> {{ doctor.qualification }}</p>
+                        <p><strong>Experience:</strong> {{ doctor.experience_years }} years</p>
+                        <p><strong>Room:</strong> {{ doctor.room_number|default:"Not assigned" }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% if schedules %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>Schedule</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Start Time</th>
+                                <th>End Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for schedule in schedules %}
+                            <tr>
+                                <td>{{ schedule.get_day_of_week_display }}</td>
+                                <td>{{ schedule.start_time }}</td>
+                                <td>{{ schedule.end_time }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

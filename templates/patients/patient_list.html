@@ -1,0 +1,284 @@
+{% extends 'base.html' %}
+
+{% block title %}Patients - Hospital Management System{% endblock %}
+
+{% block page_title %}Patient Management{% endblock %}
+
+{% block extra_css %}
+<style>
+    .search-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 15px;
+        margin-bottom: 25px;
+    }
+    
+    .patient-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+    }
+    
+    .patient-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .patient-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+    
+    .patient-info h5 {
+        margin-bottom: 5px;
+        color: #2c3e50;
+        font-weight: 600;
+    }
+    
+    .patient-meta {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+    
+    .badge-custom {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    
+    .btn-action {
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-action:hover {
+        transform: translateY(-1px);
+    }
+    
+    .stats-row {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .stat-item {
+        text-align: center;
+    }
+    
+    .stat-number {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #667eea;
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Search Section -->
+<div class="search-card">
+    <div class="card-body">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <form method="get" class="d-flex">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-0">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" class="form-control border-0" name="search" 
+                               value="{{ search_query }}" placeholder="Search by ID, name, phone, or email...">
+                        <button class="btn btn-light" type="submit">
+                            <i class="bi bi-search me-1"></i>Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4 text-end">
+                {% if user.is_admin or user.is_receptionist %}
+                    <a href="{% url 'patients:patient_create' %}" class="btn btn-light">
+                        <i class="bi bi-person-plus me-2"></i>Register New Patient
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics -->
+<div class="stats-row">
+    <div class="row">
+        <div class="col-md-3 stat-item">
+            <div class="stat-number">{{ total_patients }}</div>
+            <div class="stat-label">Total Patients</div>
+        </div>
+        <div class="col-md-3 stat-item">
+            <div class="stat-number">{{ page_obj.paginator.count }}</div>
+            <div class="stat-label">Search Results</div>
+        </div>
+        <div class="col-md-3 stat-item">
+            <div class="stat-number">{{ page_obj.number }}</div>
+            <div class="stat-label">Current Page</div>
+        </div>
+        <div class="col-md-3 stat-item">
+            <div class="stat-number">{{ page_obj.paginator.num_pages }}</div>
+            <div class="stat-label">Total Pages</div>
+        </div>
+    </div>
+</div>
+
+<!-- Patient List -->
+<div class="row">
+    {% for patient in page_obj %}
+        <div class="col-lg-6 col-xl-4">
+            <div class="patient-card card">
+                <div class="card-body">
+                    <div class="d-flex align-items-start">
+                        <div class="patient-avatar me-3">
+                            {{ patient.first_name.0 }}{{ patient.last_name.0 }}
+                        </div>
+                        <div class="patient-info flex-grow-1">
+                            <h5>{{ patient.full_name }}</h5>
+                            <div class="patient-meta">
+                                <div><i class="bi bi-card-text me-1"></i>{{ patient.patient_id }}</div>
+                                <div><i class="bi bi-telephone me-1"></i>{{ patient.phone }}</div>
+                                <div><i class="bi bi-calendar me-1"></i>{{ patient.age }} years old</div>
+                                {% if patient.blood_group %}
+                                    <div><i class="bi bi-droplet me-1"></i>{{ patient.blood_group }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge badge-custom bg-success">
+                                <i class="bi bi-person-check me-1"></i>Active
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-3">
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="bi bi-clock me-1"></i>
+                            Registered {{ patient.created_at|date:"M d, Y" }}
+                        </small>
+                        <div class="btn-group" role="group">
+                            <a href="{% url 'patients:patient_detail' patient.pk %}" 
+                               class="btn btn-outline-primary btn-action btn-sm">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            {% if user.is_admin or user.is_receptionist %}
+                                <a href="{% url 'patients:patient_update' patient.pk %}" 
+                                   class="btn btn-outline-secondary btn-action btn-sm">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="text-center py-5">
+                <i class="bi bi-people" style="font-size: 4rem; color: #dee2e6;"></i>
+                <h4 class="mt-3 text-muted">No Patients Found</h4>
+                <p class="text-muted">
+                    {% if search_query %}
+                        No patients match your search criteria.
+                    {% else %}
+                        No patients have been registered yet.
+                    {% endif %}
+                </p>
+                {% if user.is_admin or user.is_receptionist %}
+                    <a href="{% url 'patients:patient_create' %}" class="btn btn-primary">
+                        <i class="bi bi-person-plus me-2"></i>Register First Patient
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if page_obj.has_other_pages %}
+    <nav aria-label="Patient pagination" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}">
+                        <i class="bi bi-chevron-double-left"></i>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                </li>
+            {% endif %}
+            
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}">
+                        <i class="bi bi-chevron-double-right"></i>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add loading animation to search
+    document.querySelector('form').addEventListener('submit', function() {
+        const button = this.querySelector('button[type="submit"]');
+        button.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Searching...';
+        button.disabled = true;
+    });
+    
+    // Auto-focus search input
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.querySelector('input[name="search"]');
+        if (searchInput && !searchInput.value) {
+            searchInput.focus();
+        }
+    });
+</script>
+{% endblock %}

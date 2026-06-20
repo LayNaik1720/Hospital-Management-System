@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ patient.full_name }} - Hospital Management System{% endblock %}
+{% block page_title %}{{ patient.full_name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 100px; height: 100px;">
+                    <span style="font-size: 2rem; font-weight: 600;">{{ patient.first_name.0 }}{{ patient.last_name.0 }}</span>
+                </div>
+                <h4>{{ patient.full_name }}</h4>
+                <p class="text-muted">{{ patient.patient_id }}</p>
+                <span class="badge bg-success">Active Patient</span>
+                <hr>
+                <div class="row text-center">
+                    <div class="col-6">
+                        <strong>{{ patient.age }}</strong>
+                        <p class="text-muted mb-0">Years Old</p>
+                    </div>
+                    <div class="col-6">
+                        <strong>{{ patient.blood_group|default:"N/A" }}</strong>
+                        <p class="text-muted mb-0">Blood Group</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Patient Information</h5>
+                {% if user.is_admin or user.is_receptionist %}
+                    <a href="{% url 'patients:patient_update' patient.pk %}" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-pencil me-1"></i>Edit
+                    </a>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Patient ID:</strong> {{ patient.patient_id }}</p>
+                        <p><strong>Gender:</strong> {{ patient.get_gender_display }}</p>
+                        <p><strong>Date of Birth:</strong> {{ patient.date_of_birth|date:"F d, Y" }}</p>
+                        <p><strong>Phone:</strong> {{ patient.phone }}</p>
+                        <p><strong>Email:</strong> {{ patient.email|default:"Not provided" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Blood Group:</strong> {{ patient.blood_group|default:"Not specified" }}</p>
+                        <p><strong>Emergency Contact:</strong> {{ patient.emergency_contact_name }}</p>
+                        <p><strong>Emergency Phone:</strong> {{ patient.emergency_contact_phone }}</p>
+                        <p><strong>Relation:</strong> {{ patient.emergency_contact_relation }}</p>
+                        <p><strong>Registered:</strong> {{ patient.created_at|date:"F d, Y" }}</p>
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <p><strong>Address:</strong></p>
+                        <p class="text-muted">{{ patient.address }}</p>
+                    </div>
+                </div>
+                
+                {% if patient.allergies %}
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <p><strong>Allergies:</strong></p>
+                        <p class="text-danger">{{ patient.allergies }}</p>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if patient.medical_history %}
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <p><strong>Medical History:</strong></p>
+                        <p class="text-muted">{{ patient.medical_history }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        {% if recent_appointments %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>Recent Appointments</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Doctor</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appointment in recent_appointments %}
+                            <tr>
+                                <td>{{ appointment.appointment_date|date:"M d, Y" }}</td>
+                                <td>{{ appointment.doctor.full_name }}</td>
+                                <td><span class="badge bg-primary">{{ appointment.get_status_display }}</span></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

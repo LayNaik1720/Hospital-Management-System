@@ -1,0 +1,328 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - Hospital Management System{% endblock %}
+
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    }
+    
+    .form-section {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+    
+    .section-title {
+        color: #667eea;
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #e9ecef;
+    }
+    
+    .form-control, .form-select {
+        border-radius: 8px;
+        border: 2px solid #e9ecef;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .btn-submit {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 10px;
+        padding: 12px 30px;
+        font-weight: 600;
+        color: white;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        color: white;
+    }
+    
+    .btn-cancel {
+        border: 2px solid #6c757d;
+        border-radius: 10px;
+        padding: 12px 30px;
+        font-weight: 600;
+        color: #6c757d;
+        background: transparent;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-cancel:hover {
+        background: #6c757d;
+        color: white;
+        transform: translateY(-2px);
+    }
+    
+    .required-field::after {
+        content: " *";
+        color: #dc3545;
+    }
+    
+    .form-floating > label {
+        color: #6c757d;
+    }
+    
+    .invalid-feedback {
+        display: block;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="form-card card">
+            <div class="card-body p-4">
+                <form method="post" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <h4 class="section-title">
+                            <i class="bi bi-person me-2"></i>Personal Information
+                        </h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    {{ form.first_name }}
+                                    <label for="{{ form.first_name.id_for_label }}" class="required-field">First Name</label>
+                                    {% if form.first_name.errors %}
+                                        <div class="invalid-feedback">{{ form.first_name.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    {{ form.last_name }}
+                                    <label for="{{ form.last_name.id_for_label }}" class="required-field">Last Name</label>
+                                    {% if form.last_name.errors %}
+                                        <div class="invalid-feedback">{{ form.last_name.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    {{ form.date_of_birth }}
+                                    <label for="{{ form.date_of_birth.id_for_label }}" class="required-field">Date of Birth</label>
+                                    {% if form.date_of_birth.errors %}
+                                        <div class="invalid-feedback">{{ form.date_of_birth.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    {{ form.gender }}
+                                    <label for="{{ form.gender.id_for_label }}" class="required-field">Gender</label>
+                                    {% if form.gender.errors %}
+                                        <div class="invalid-feedback">{{ form.gender.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    {{ form.blood_group }}
+                                    <label for="{{ form.blood_group.id_for_label }}">Blood Group</label>
+                                    {% if form.blood_group.errors %}
+                                        <div class="invalid-feedback">{{ form.blood_group.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Information -->
+                    <div class="form-section">
+                        <h4 class="section-title">
+                            <i class="bi bi-telephone me-2"></i>Contact Information
+                        </h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    {{ form.phone }}
+                                    <label for="{{ form.phone.id_for_label }}" class="required-field">Phone Number</label>
+                                    {% if form.phone.errors %}
+                                        <div class="invalid-feedback">{{ form.phone.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    {{ form.email }}
+                                    <label for="{{ form.email.id_for_label }}">Email Address</label>
+                                    {% if form.email.errors %}
+                                        <div class="invalid-feedback">{{ form.email.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-floating">
+                                {{ form.address }}
+                                <label for="{{ form.address.id_for_label }}" class="required-field">Address</label>
+                                {% if form.address.errors %}
+                                    <div class="invalid-feedback">{{ form.address.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Emergency Contact -->
+                    <div class="form-section">
+                        <h4 class="section-title">
+                            <i class="bi bi-exclamation-triangle me-2"></i>Emergency Contact
+                        </h4>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    {{ form.emergency_contact_name }}
+                                    <label for="{{ form.emergency_contact_name.id_for_label }}" class="required-field">Contact Name</label>
+                                    {% if form.emergency_contact_name.errors %}
+                                        <div class="invalid-feedback">{{ form.emergency_contact_name.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    {{ form.emergency_contact_phone }}
+                                    <label for="{{ form.emergency_contact_phone.id_for_label }}" class="required-field">Contact Phone</label>
+                                    {% if form.emergency_contact_phone.errors %}
+                                        <div class="invalid-feedback">{{ form.emergency_contact_phone.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    {{ form.emergency_contact_relation }}
+                                    <label for="{{ form.emergency_contact_relation.id_for_label }}" class="required-field">Relationship</label>
+                                    {% if form.emergency_contact_relation.errors %}
+                                        <div class="invalid-feedback">{{ form.emergency_contact_relation.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Medical Information -->
+                    <div class="form-section">
+                        <h4 class="section-title">
+                            <i class="bi bi-heart-pulse me-2"></i>Medical Information
+                        </h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    {{ form.allergies }}
+                                    <label for="{{ form.allergies.id_for_label }}">Known Allergies</label>
+                                    {% if form.allergies.errors %}
+                                        <div class="invalid-feedback">{{ form.allergies.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">List any known allergies or medications to avoid</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    {{ form.medical_history }}
+                                    <label for="{{ form.medical_history.id_for_label }}">Medical History</label>
+                                    {% if form.medical_history.errors %}
+                                        <div class="invalid-feedback">{{ form.medical_history.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">Previous medical conditions, surgeries, etc.</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Form Actions -->
+                    <div class="d-flex justify-content-between align-items-center pt-3">
+                        <a href="{% url 'patients:patient_list' %}" class="btn btn-cancel">
+                            <i class="bi bi-arrow-left me-2"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-submit">
+                            <i class="bi bi-check-circle me-2"></i>
+                            {% if patient %}Update Patient{% else %}Register Patient{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Form validation
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    } else {
+                        // Show loading state
+                        const submitBtn = form.querySelector('.btn-submit');
+                        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+                        submitBtn.disabled = true;
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+    
+    // Auto-format phone number
+    document.getElementById('{{ form.phone.id_for_label }}').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length >= 6) {
+            value = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+        } else if (value.length >= 3) {
+            value = value.replace(/(\d{3})(\d{3})/, '($1) $2');
+        }
+        e.target.value = value;
+    });
+    
+    // Calculate age from date of birth
+    document.getElementById('{{ form.date_of_birth.id_for_label }}').addEventListener('change', function(e) {
+        const birthDate = new Date(e.target.value);
+        const today = new Date();
+        const age = Math.floor((today - birthDate) / (365.25 * 24 * 60 * 60 * 1000));
+        
+        if (age >= 0 && age <= 150) {
+            const ageDisplay = document.getElementById('age-display');
+            if (!ageDisplay) {
+                const ageSpan = document.createElement('small');
+                ageSpan.id = 'age-display';
+                ageSpan.className = 'text-muted';
+                ageSpan.textContent = `Age: ${age} years`;
+                e.target.parentNode.appendChild(ageSpan);
+            } else {
+                ageDisplay.textContent = `Age: ${age} years`;
+            }
+        }
+    });
+</script>
+{% endblock %}

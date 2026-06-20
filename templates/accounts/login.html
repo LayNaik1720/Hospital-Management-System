@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Hospital Management System</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+        }
+        
+        .login-left {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .login-right {
+            padding: 60px 40px;
+        }
+        
+        .hospital-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .login-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .login-subtitle {
+            color: #6c757d;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+        
+        .form-floating {
+            margin-bottom: 20px;
+        }
+        
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+        
+        .feature-item i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .alert {
+            border-radius: 12px;
+            border: none;
+            margin-bottom: 20px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .login-container {
+                margin: 10px;
+            }
+            
+            .login-left, .login-right {
+                padding: 40px 30px;
+            }
+            
+            .login-title {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="row g-0 h-100">
+            <!-- Left Side - Branding -->
+            <div class="col-lg-6 login-left">
+                <div>
+                    <i class="bi bi-hospital hospital-icon"></i>
+                    <h2 class="h3 mb-3">Hospital Management System</h2>
+                    <p class="mb-4">Comprehensive healthcare management solution for modern hospitals</p>
+                    
+                    <div class="features">
+                        <div class="feature-item">
+                            <i class="bi bi-shield-check"></i>
+                            <span>Secure & HIPAA Compliant</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="bi bi-people"></i>
+                            <span>Patient Management</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="bi bi-calendar-check"></i>
+                            <span>Appointment Scheduling</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="bi bi-clipboard-pulse"></i>
+                            <span>Electronic Medical Records</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="bi bi-graph-up"></i>
+                            <span>Analytics & Reports</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number">24/7</span>
+                            <span class="stat-label">System Availability</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Data Security</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Side - Login Form -->
+            <div class="col-lg-6 login-right">
+                <div class="h-100 d-flex flex-column justify-content-center">
+                    <div class="text-center mb-4">
+                        <h1 class="login-title">Welcome Back</h1>
+                        <p class="login-subtitle">Please sign in to your account</p>
+                    </div>
+                    
+                    <!-- Messages -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                <i class="bi bi-{% if message.tags == 'error' %}exclamation-triangle{% elif message.tags == 'success' %}check-circle{% else %}info-circle{% endif %} me-2"></i>
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <!-- Login Form -->
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="id_username" name="username" placeholder="Username" required>
+                            <label for="id_username"><i class="bi bi-person me-2"></i>Username</label>
+                            <div class="invalid-feedback">
+                                Please enter your username.
+                            </div>
+                        </div>
+                        
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control" id="id_password" name="password" placeholder="Password" required>
+                            <label for="id_password"><i class="bi bi-lock me-2"></i>Password</label>
+                            <div class="invalid-feedback">
+                                Please enter your password.
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-login">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>
+                            Sign In
+                        </button>
+                    </form>
+                    
+                    <div class="text-center mt-4">
+                        <small class="text-muted">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Contact your administrator for account access
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+        
+        // Auto-hide alerts after 5 seconds
+        setTimeout(function() {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                var bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    </script>
+</body>
+</html>
